@@ -27,7 +27,7 @@ import ast
 from typing import Any
 from enum import IntEnum
 from homeassistant.loader import bind_hass
-from homeassistant.components.vacuum import VacuumEntity, VacuumEntityFeature
+from homeassistant.components.vacuum import StateVacuumEntity, StateVacuumEntityFeature
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import (
@@ -115,7 +115,7 @@ async def async_setup_entry(
         async_add_entities([RoboVacEntity(item)])
 
 
-class RoboVacEntity(VacuumEntity):
+class RoboVacEntity(StateVacuumEntity):
     """Eufy Robovac version of a Vacuum entity"""
 
     _attr_should_poll = True
@@ -192,12 +192,12 @@ class RoboVacEntity(VacuumEntity):
         """Return the state attributes of the vacuum cleaner."""
         data = super().state_attributes
         # data: dict[str, Any] = {}
-        if self.supported_features & VacuumEntityFeature.BATTERY:
+        if self.supported_features & StateVacuumEntityFeature.BATTERY:
             data[ATTR_BATTERY_LEVEL] = self.battery_level
             data[ATTR_BATTERY_ICON] = self.battery_icon
-        if self.supported_features & VacuumEntityFeature.FAN_SPEED:
+        if self.supported_features & StateVacuumEntityFeature.FAN_SPEED:
             data[ATTR_FAN_SPEED] = self.fan_speed
-        if self.supported_features & VacuumEntityFeature.STATUS:
+        if self.supported_features & StateVacuumEntityFeature.STATUS:
             data[ATTR_STATUS] = self.status
         if self.robovac_supported & RoboVacEntityFeature.CLEANING_AREA:
             data[ATTR_CLEANING_AREA] = self.cleaning_area
@@ -217,7 +217,7 @@ class RoboVacEntity(VacuumEntity):
     @property
     def capability_attributes(self) -> Mapping[str, Any] | None:
         """Return capability attributes."""
-        if self.supported_features & VacuumEntityFeature.FAN_SPEED:
+        if self.supported_features & StateVacuumEntityFeature.FAN_SPEED:
             return {
                 ATTR_FAN_SPEED_LIST: self.fan_speed_list,
                 # CONF_ACCESS_TOKEN: self.access_token,
