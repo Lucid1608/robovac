@@ -25,7 +25,7 @@ dynamic_requires = []
 
 setup(
     name='robovac',
-    version="1.0",
+    version="1.2",
     author='Brendan McCluskey',
     url='http://github.com/bmccluskey/robovac',
     packages=find_packages(),
